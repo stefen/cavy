@@ -61,10 +61,15 @@ export default function hook(WrappedComponent) {
           f(component)
           return
         }
+
+        if(!Array.isArray(identifier)) {
+          identifier = [identifier];
+        }
+
         if (component) {
-          this.context.testHooks.add(identifier, component);
+          identifier.map(key => this.context.testHooks.add(key, component));
         } else {
-          this.context.testHooks.remove(identifier, component);
+          identifier.map(key => this.context.testHooks.remove(key, component));
         }
         f(component);
       }
