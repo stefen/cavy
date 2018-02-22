@@ -124,7 +124,9 @@ export default class TestScope {
   // promise if the component is found, rejects the promise after
   // this.waitTime if the component is never found in the test hook
   // store.
-  findComponent(identifier) {
+  findComponent(identifier, waitTime) {
+    if(typeof waitTime === 'undefined') waitTime = this.waitTime;
+
     let promise = new Promise((resolve, reject) => {
       let startTime = Date.now();
       let loop = setInterval(() => {
@@ -133,7 +135,7 @@ export default class TestScope {
           clearInterval(loop);
           return resolve(component);
         } else {
-          if (Date.now() - startTime >= this.waitTime) {
+          if (Date.now() - startTime >= waitTime) {
             reject(new ComponentNotFoundError(`Could not find component with identifier ${identifier}`));
             clearInterval(loop);
           }
@@ -228,7 +230,7 @@ export default class TestScope {
   // Returns a promise, use await when calling this function. Promise will be
   // rejected if component is not found, otherwise will be resolved with
   // `true`.
-  async exists(identifier) {
+  async exists(identifier, waitTime) {
     const component = await this.findComponent(identifier);
     return !!component;
   }
