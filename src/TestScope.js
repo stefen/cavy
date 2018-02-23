@@ -231,7 +231,7 @@ export default class TestScope {
   // rejected if component is not found, otherwise will be resolved with
   // `true`.
   async exists(identifier, waitTime) {
-    const component = await this.findComponent(identifier);
+    const component = await this.findComponent(identifier, waitTime);
     return !!component;
   }
 
@@ -239,9 +239,9 @@ export default class TestScope {
   // test for your maximum wait time.
   //
   // identifier - Identifier for the component.
-  async notExists(identifier) {
+  async notExists(identifier, waitTime) {
     try {
-      await this.findComponent(identifier);
+      await this.findComponent(identifier, waitTime);
     } catch(e) {
       if (e.name == 'ComponentNotFoundError') {
         return true;
